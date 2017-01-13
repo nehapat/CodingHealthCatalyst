@@ -15,9 +15,17 @@ namespace MVCWebApp.Controllers
         private PeopleDataDBContext db = new PeopleDataDBContext();
 
         // GET: People
-        public ActionResult Index()
+        public ActionResult Index(string searchString)
         {
-            return View(db.People.ToList());
+            var people = from p in db.People
+                          select p;
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                people = people.Where(s => s.Name.Contains(searchString));
+            }
+
+            return View(people);
+           //return View(db.People.ToList());
         }
 
         // GET: People/Details/5
@@ -78,7 +86,7 @@ namespace MVCWebApp.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "ID,Name,Address,Age,Image")] People peopleData)
+        public ActionResult Edit([Bind(Include = "ID,Name,Address,Age,Interests,Image")] People peopleData)
         {
             if (ModelState.IsValid)
             {

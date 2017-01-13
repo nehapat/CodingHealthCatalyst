@@ -1,13 +1,20 @@
 ﻿@model IEnumerable<MVCWebApp.Models.People>
 
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "PeopleData";
 }
 
 <h2>Index</h2>
 
 <p>
     @Html.ActionLink("Create New", "Create")
+
+    @using (Html.BeginForm("Index","People",FormMethod.Get))
+    {
+        <p> Search: @Html.TextBox("SearchString") <br />
+        <input type="submit" value="Filter" />
+        </p>
+    }
 </p>
 <table class="table">
     <tr>
@@ -19,6 +26,9 @@
         </th>
         <th>
             @Html.DisplayNameFor(model => model.Age)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Interests)
         </th>
         <th>
             @Html.DisplayNameFor(model => model.Image)
@@ -38,7 +48,11 @@
             @Html.DisplayFor(modelItem => item.Age)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.Image)
+            @Html.DisplayFor(modelItem => item.Interests)
+        </td>
+        <td>
+           
+            <img src="@Url.Content(item.Image)" width="150" height="120" />
         </td>
         <td>
             @Html.ActionLink("Edit", "Edit", new { id=item.ID }) |
